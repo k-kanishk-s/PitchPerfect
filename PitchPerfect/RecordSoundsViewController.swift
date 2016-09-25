@@ -14,25 +14,16 @@ class RecordSoundsViewController: UIViewController, AVAudioRecorderDelegate {
     @IBOutlet weak var recordButton: UIButton!
     @IBOutlet weak var recordingLabel: UILabel!
     var audioRecorder:AVAudioRecorder!
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-    }
     
     override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated);
         stopRecordingButton.enabled = false
     }
     
     
     @IBAction func recordAudio(sender: AnyObject) {
         print("A button was pressed")
-        recordingLabel.text = "Recording"
-        stopRecordingButton.enabled = true
-        recordButton.enabled = false
+        setUIState(true)
         
         let dirPath = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0] as String
         let recordedName = "recordedVoice.wav"
@@ -52,19 +43,23 @@ class RecordSoundsViewController: UIViewController, AVAudioRecorderDelegate {
     
     @IBAction func stopRecording(sender: AnyObject) {
         print("Done recording")
-        recordingLabel.text = "Tap to record"
-        recordButton.enabled = true
-        stopRecordingButton.enabled = false
+        setUIState(false)
         
         audioRecorder.stop()
         let session = AVAudioSession.sharedInstance()
         try! session.setActive(false)
     }
+
+    func setUIState(isRecording: Bool) {
+        recordingLabel.text = isRecording ? "Recording" : "Tap to record"
+        recordButton.enabled = !isRecording
+        stopRecordingButton.enabled = isRecording
+    }
     
     func audioRecorderDidFinishRecording(recorder: AVAudioRecorder, successfully flag: Bool) {
         print("Finished recording")
         if (flag) {
-            self.performSegueWithIdentifier("stopRecording", sender: audioRecorder.url)
+            performSegueWithIdentifier("stopRecording", sender: audioRecorder.url)
         } else {
             print("Saving failed")
         }

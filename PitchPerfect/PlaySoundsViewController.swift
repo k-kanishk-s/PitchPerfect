@@ -40,7 +40,6 @@ class PlaySoundsViewController: UIViewController {
     
     @IBAction func stopButtonPressed(sender: AnyObject) {
         stopAudio()
-        configureUI(.NotPlaying)
     }
     
     var recordedAudioURL: NSURL!
@@ -55,12 +54,20 @@ class PlaySoundsViewController: UIViewController {
         super.viewDidLoad()
         setupAudio()
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-    }
     
     override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        setButtonsImageView()
         configureUI(.NotPlaying)
+    }
+    
+    func setButtonsImageView() {
+        snailButton.imageView?.contentMode = UIViewContentMode.ScaleAspectFit
+        rabbitButton.imageView?.contentMode = UIViewContentMode.ScaleAspectFit
+        chipmunkButton.imageView?.contentMode = UIViewContentMode.ScaleAspectFit
+        darthVaderButton.imageView?.contentMode = UIViewContentMode.ScaleAspectFit
+        echoButton.imageView?.contentMode = UIViewContentMode.ScaleAspectFit
+        reverbButton.imageView?.contentMode = UIViewContentMode.ScaleAspectFit
+        stopButton.imageView?.contentMode = UIViewContentMode.ScaleAspectFit
     }
 }
